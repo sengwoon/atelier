@@ -1,109 +1,32 @@
 body{
-	background-color: #534741;
+	background-image: url('img/bg.jpg');
 	overflow: hidden;
 }
 #book{
 	-webkit-transform:  translate3d(0px, 0px, 0px);
 	-webkit-perspective: 5000px;
-	background-color: lightgrey;
 	position: relative;
 	margin:auto;
 	margin-top:5%;
 	width:1280px;
 	height:780px;
-}
-.nextPage{
-	-webkit-animation: aniNextPage 3s;
-	-webkit-transform: translate3d(0px, 0px, 0px) rotateY(-180deg);
-}
-.prevPage{
-	-webkit-animation: aniPrevPage 3s;
-	-webkit-transform: translate3d(0px, 0px, 0px) rotateY(0deg);
-}
-@-webkit-keyframes aniNextPage {
-    0% {
-        -webkit-transform:  translate3d(0px, 0px, 0px) rotateY(0deg);
-    }
-    10% {
-        -webkit-transform:  translate3d(0px, 0px, 0px) rotateY(0deg);
-    }
-	90% {
-        -webkit-transform: translate3d(0px, 0px, 0px) rotateY(-180deg);
-    }
-}
-@-webkit-keyframes aniPrevPage {
-    0% {
-        -webkit-transform:  translate3d(0px, 0px, 0px) rotateY(-180deg);
-    }
-    10% {
-        -webkit-transform:  translate3d(0px, 0px, 0px) rotateY(-180deg);
-    }
-	90% {
-        -webkit-transform: translate3d(0px, 0px, 0px) rotateY(0deg);
-    }
-}
-.nextContent{
-	-webkit-animation: aniNextContent 3s;
-	-webkit-transform: translate3d(0px, 0px, 0px);
-	opacity: 0;
-}
-.prevContent{
-	-webkit-animation: aniPrevContent 3s;
-	-webkit-transform: translate3d(0px, 0px, 1px);
-	opacity: 1;
-}
-.currentContent{
-	-webkit-animation: aniCurrentContent 3s;
-	-webkit-transform: translate3d(0px, 0px, 1px);
-	opacity: 1;
-}
-@-webkit-keyframes aniNextContent {
-    0% {
-    	-webkit-transform: translate3d(0px, 0px, 0px);
-        opacity: 1;
-    }
-    20% {
-    	-webkit-transform: translate3d(0px, 0px, 0px);
-        opacity: 0;
-    }
-}
-@-webkit-keyframes aniPrevContent {
-	0% {
-		-webkit-transform: translate3d(0px, 0px, 0px);
-        opacity: 0;
-    }
-    50% {
-    	-webkit-transform: translate3d(0px, 0px, 0px);
-        opacity: 0;
-    }
-    70% {
-    	-webkit-transform: translate3d(0px, 0px, 1px);
-        opacity: 1;
-    }
-}
-@-webkit-keyframes aniCurrentContent {
-	0% {
-		-webkit-transform: translate3d(0px, 0px, 0px);
-        opacity: 0;
-    }
-    70% {
-    	-webkit-transform: translate3d(0px, 0px, 0px);
-        opacity: 0;
-    }
-    90% {
-    	-webkit-transform: translate3d(0px, 0px, 1px);
-        opacity: 1;
-    }
+	
 }
 #page0{
+	background-image: url(img/cover.jpg);
 	-webkit-transform-style: preserve-3d;
 	-webkit-transform-origin:0px 0px;
 	font-size: 72px;
 	color:white;
 	background-color: black;
 	position: absolute;
+	top:60px;
 	width:1280px;
-	height:780px;
+	height:720px;
+}
+#content0{
+	font-size: 72px;
+	position: absolute;
 }
 #page1{
 	-webkit-transform-style: preserve-3d;
@@ -143,8 +66,26 @@ body{
 	width:960px;
 	height:576px;
 }
-#outro{
+#page3{
+	-webkit-transform-style: preserve-3d;
+	-webkit-transform-origin:0px 0px;
+	background-color: white;
+	position: absolute;
+	top:60px;
+	width:1280px;
+	height:720px;
+}
+#content3{
 	font-size: 72px;
+	color:white;
+	background-color: cyan;
+	position: absolute;
+	margin:auto;
+	top:70px;
+	width:960px;
+	height:576px;
+}
+#page4{
 	color:black;
 	background-color:lightgrey;
 	position: absolute;
@@ -152,8 +93,15 @@ body{
 	width:1280px;
 	height:720px;
 }
+#content4{
+	font-size: 72px;
+	position: absolute;
+}
 
 #intro1{
+	background-image: url(img/bg_current.png);
+	-webkit-mask-image: url(img/index_mask.png);
+	-webkit-mask-size: 300px 60px;
 	font-size: 36px;
 	text-align: center;
 	color:black;
@@ -162,8 +110,11 @@ body{
 	top:-60px;
 	width:300px;
 	height:60px;
+	-webkit-backface-visibility:hidden;
 }
 #work1{
+	-webkit-mask-image: url(img/index_mask.png);
+	-webkit-mask-size: 300px 60px;
 	font-size: 36px;
 	text-align: center;
 	color:black;
@@ -172,9 +123,13 @@ body{
 	top:-60px;
 	left:300px;
 	width:300px;
-	height:60px;
+	height:65px;
+	-webkit-backface-visibility:hidden;
 }
 #intro2{
+	-webkit-mask-image: url(img/index_mask.png);
+	-webkit-mask-size: 300px 60px;
+	background-image: url(img/bg_current.png);
 	font-size: 36px;
 	text-align: center;
 	color:black;
@@ -185,6 +140,8 @@ body{
 	height:60px;
 }
 #work2{
+	-webkit-mask-image: url(img/index_mask.png);
+	-webkit-mask-size: 300px 60px;
 	font-size: 36px;
 	text-align: center;
 	color:black;
@@ -194,6 +151,10 @@ body{
 	left:300px;
 	width:300px;
 	height:60px;
+}
+
+.multiply{
+	position: absolute;
 }
 
 #nextBtn{
