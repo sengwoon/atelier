@@ -228,6 +228,11 @@ p{
 	height:100%;
     pointer-events: none;
     background-color: black;
+    color:grey;
+    font-family: Helvetica;
+    font-size: 20px;
+    line-height: 720px;
+	text-align: center;
 }
 #prev{
 	transition:0.5s;

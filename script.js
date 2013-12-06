@@ -336,6 +336,7 @@ window.onload = function(){
 	}
 	
 	//시작
+	light.removeChild(light.childNodes[0]);
 	book.style.display="block";
 	light.style.backgroundColor="transparent";
 	flagLight="init";
