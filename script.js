@@ -344,7 +344,7 @@ window.onmousemove = function(e){
 		x = Math.floor(e.clientX - margin.left);
 		y = Math.floor(e.clientY - margin.top);
 
-		if(flag!="prev" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
+		if(flag!="prev" && flagLight!="init" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
 			canNext=true;
 			next.style.opacity=0.75;
 		} else if(flag!="prev" && currentPage>0 && currentPage<pages-1 && x>1000 && x<1280 && y>0 && y<720){
