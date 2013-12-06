@@ -1,10 +1,9 @@
-var idxIntro1, idxIntro2, idxWork1, idxWork2, light;
+var idxIntro1, idxIntro2, idxWork1, idxWork2, light, prev, next;
 var x, y;
-var lightAlpha = 1;
-var lightW = 1920;
-var lightH = 1080;
-var lightX = -960;
-var lightY = -60;
+var lightAlpha = 0.9;
+var lightDropoff=0.5;
+var lightSize = 0;
+
 var flagLight = "init";
 
 var pages = 5;
@@ -14,48 +13,76 @@ var arrContent = new Array();
 var currentPage = 0;
 //페이지 넘김 조절 플래그
 var flag = "none";
+var canNext = false;
+var canPrev = false;
 var multiFlag = "none";
 var num;
 //현 콘텐츠 알파값 조절 플래그
 var contentFlag = false;
 
 function animation(){
-	light.style.width = lightW+"px";
-	light.style.height = lightH+"px";
-	light.style.marginLeft = lightX+"px";
-	light.style.marginTop = lightY+"px";
+	//조명 제어
+	light.style.backgroundImage = "-webkit-gradient(radial, 50% 500, 0, 50% 500, "+lightSize+", from(rgba(0,0,0,0)), to(rgba(0,0,0,"+lightAlpha+")), color-stop(0.7, rgba(0,0,0,"+lightDropoff+")))";
 	if(flagLight=="init"){
-		lightAlpha-=0.01;
-		if(lightAlpha<0){
-			lightAlpha=0;
+		lightAlpha-=0.001;
+		lightSize+=2.5;
+		if(lightAlpha<0.85)
+			lightAlpha=0.85;
+		if(lightSize>350)
+			lightSize=350;
+		if(lightAlpha==0.85 && lightSize==350)
 			flagLight="none";
-		}
-		light.style.backgroundColor = "rgba(0,0,0,"+lightAlpha+")";
-	} else if(flagLight=="in"){
-		lightW+=16;
-		lightH+=9;
-		lightX-=8;
-		lightY-=4.5;
-		if(lightW>3840)  lightW = 3840;
-		if(lightH>2160)  lightH = 2160;
-		if(lightX<-1920) lightX = -1920;
-		if(lightY<-600)  lightY = -600;
-		if(lightW==3840 && lightH==2160 && lightX== -1920 && lightY== -600) flagLight = "none";
-	} else if(flagLight=="out"){
-		lightW-=32;
-		lightH-=18;
-		lightX+=16;
-		lightY+=9;
-		if(lightW<1920)  lightW = 1920;
-		if(lightH<1080)  lightH = 1080;
-		if(lightX>-960) lightX = -960;
-		if(lightY>-60)  lightY = -60;
-		if(lightW==1920 && lightH==1080 && lightX== -960 && lightY== -50) flagLight = "none";
 	}
-
+	if(flagLight=="in" && lightAlpha==0.85){
+		lightSize+=7;
+		lightDropoff-=0.01;
+		if(lightDropoff<0)
+			lightDropoff=0;
+		if(lightSize>750)
+			lightSize=750;
+		if(lightDropoff==0 && lightSize==750)
+			flagLight = "none";			
+	} else if(flagLight=="out" && lightAlpha==0.85){
+		lightSize-=7;
+		lightDropoff+=0.01;
+		if(lightDropoff>0.5)
+			lightDropoff=0.5;
+		if(lightSize<350)
+			lightSize=350;
+		if(lightDropoff==0.5 && lightSize==350)
+			flagLight = "none";
+	}
+	//페이지 밝기 제어
+	for(var i=2; i<pages; i++){
+		if(i<=currentPage-1){
+			arrPage[i].bright=1;
+		} else if(i==currentPage){
+			arrPage[i].bright+=0.002;
+			if(arrPage[i].bright>=1)
+				arrPage[i].bright=1;
+		} else if(i==currentPage+1){
+			arrPage[i].bright-=0.002;
+			if(arrPage[i].bright<=0.85)
+				arrPage[i].bright=0.85;
+		} else if(i>currentPage+1){
+			arrPage[i].bright=0.85;
+		}
+	}
+	//페이지 넘김가능표시 제어
+	if(flag=="none"){
+		if(canNext){
+			arrPage[currentPage].deg-=0.4;
+			if(arrPage[currentPage].deg<-5)
+				arrPage[currentPage].deg=-5;
+		} else {
+			arrPage[currentPage].deg+=0.25;
+			if(arrPage[currentPage].deg>0)
+				arrPage[currentPage].deg=0;
+		}
+	}
+	//페이지 넘김 제어
 	for(var i=0; i<pages; i++){
 		if( flag != "prev" && arrPage[i].flag=="next"){
-			if(i==0) flagLight="in";
 			//여러번 클릭해 넘길때 페이지넘김플래그와 콘텐츠플래그가 가장 마지막 페이지 넘김이 완료될때까지 유지
 			flag = "next";
 			contentFlag = false;
@@ -71,6 +98,8 @@ function animation(){
 				//페이지 넘김
 				if(arrPage[i].deg>-82.7){
 					arrPage[i].accel +=0.05 ;
+					//표지의 경우, 조명 인
+					if(i==0 && arrPage[i].deg<-40) flagLight="in";
 				} else {
 					arrPage[i].accel -=0.02 ;
 					if(arrPage[i].accel <= 0.1){
@@ -80,9 +109,12 @@ function animation(){
 					//페이지 앞뒷면 전환효과
 					if(i == 0)
 						arrPage[i].page.childNodes[0].style.display="none";
-
+					if(i == 1)
+						idxIntro1.style.display="none";
+					if(i == 2)
+						idxWork1.style.display="none";
 				}
-				arrPage[i].deg -= arrPage[i].accel ;
+				arrPage[i].deg -= arrPage[i].accel;
 				//페이지가 완전히 넘어가면 가속도 초기화, 페이지 넘김 종료, 콘텐츠 플래그 실행
 				if(arrPage[i].deg<=-180){
 					arrPage[i].accel= 0;
@@ -110,9 +142,9 @@ function animation(){
 				//페이지 넘김
 				if(arrPage[i].deg<-82.7){
 					arrPage[i].accel +=0.05;
+					//표지의 경우, 조명 아웃
+					if(i==0 && arrPage[i].deg>-110) flagLight="out";
 				} else {
-					if(i==0) flagLight="out";
-					
 					arrPage[i].accel -=0.02 ;
 					if(arrPage[i].accel <= 0.1){
 						arrPage[i].accel = 0.1;
@@ -121,8 +153,10 @@ function animation(){
 					//페이지 앞뒷면 전환효과
 					if(i == 0)
 						arrPage[i].page.childNodes[0].style.display="block";
-
-						
+					if(i == 1)
+						idxIntro1.style.display="block";
+					if(i == 2)
+						idxWork1.style.display="block";
 				}			
 				arrPage[i].deg += arrPage[i].accel ;
 				//페이지가 완전히 넘어가면 가속도 초기화, 페이지 넘김 종료, 콘텐츠 플래그 실행
@@ -136,9 +170,10 @@ function animation(){
 				}
 			}
 		}
-
+		//콘텐츠 투명도와 알파변수, 페이지 각도와 디그리변수, 페이지 밝기와 브라이트 변수 동기화
 		arrContent[i].ctnt.style.opacity=arrContent[i].alpha;
 		arrPage[i].page.style["-webkit-transform"] = "rotateY("+arrPage[i].deg+"deg)";
+		arrPage[i].page.style["-webkit-filter"] = "brightness("+arrPage[i].bright+")";
 	}
 
 	if(contentFlag){
@@ -150,9 +185,62 @@ function animation(){
 			contentFlag = false;
 		}
 	}
+	//인덱스 움직임 제어
+	if(currentPage<1){
+		if(flag=="none"){
+			if(flagLight=="init"){
+				idxIntro1.className="indexInit1";
+				idxWork1.className="indexInit2";
+			} else {
+				idxIntro1.className="indexAni";
+				idxWork1.className="indexAni";
+			}
+		} else {
+			idxIntro1.className="index";
+			idxWork1.className="index";
+		}
+		if(flagLight=="init"){
+			idxIntro2.style.opacity=0;
+			idxWork2.style.opacity=0;
+		} else {
+			idxIntro2.style.opacity=1;
+			idxWork2.style.opacity=1;
+		}
+	} else if(currentPage==1){
+		idxIntro1.className="index";
+		if(flag=="none"){
+			idxWork1.className="indexAni";
+		} else{
+			idxWork1.className="index";
+		}
+		idxIntro2.style.opacity=1;
+		idxIntro2.className="index";
+		idxWork2.style.opacity=1;
+		idxWork2.className="index";
+	} else if(currentPage==2){
+		idxIntro1.className="index";
+		idxWork1.className="index";
+		if(flag=="none"){
+			idxIntro2.className="indexAni";
+		} else{
+			idxIntro2.className="index";
+		}
+		idxWork2.className="index";
+	} else if(currentPage>2){
+		idxIntro1.className="index";
+		idxWork1.className="index";
+		if(flag=="none"){
+			idxIntro2.className="indexAni";
+			idxWork2.className="indexAni";
+		} else{
+			idxIntro2.className="index";
+			idxWork2.className="index";
+		}
+	}
+
 	requestAnimationFrame(animation);
 }
-
+//여러장의 페이지 넘김 제어
 function multiAnim(){
 	if(multiFlag=="work1"){
 		if(num == undefined)
@@ -198,6 +286,7 @@ function pageSetting(_i){
 	objP.deg = 0;
 	objP.accel = 0;
 	objP.trans = 0;
+	objP.bright = 1;
 	arrPage.push(objP);
 	arrPage[_i].page.style.zIndex = pages-_i;
 
@@ -218,8 +307,34 @@ window.onload = function(){
 	idxWork1 = document.querySelector("#work1");
 	idxWork2 = document.querySelector("#work2");
 	light = document.querySelector("#black");
-
+	prev = document.querySelector("#prev");
+	next = document.querySelector("#next");
+	//인덱스 버튼의 경우 겹치는 부분을 처리하기 위해 온클릭 함수를 사용(div의 상하관계를 인식)
+	idxIntro1.onclick = function(){
+		if(currentPage==0 && flag=="none"){
+			if(arrPage[currentPage].className!="nextPage" && (flag=="none" || flag=="next")){
+				arrPage[0].flag = "next";
+				currentPage=1;
+			}
+		}
+	}
+	idxIntro2.onclick = function(){
+		if(currentPage>1 && flag=="none"){
+			multiFlag="intro2";
+		}
+	}
+	idxWork1.onclick = function(){
+		if(currentPage<2 && flag=="none"){
+			multiFlag="work1";
+		}
+	}
+	idxWork2.onclick = function(){
+		if(currentPage>2 && flag=="none"){
+			multiFlag="work2";
+		}
+	}
 	animation();
+	//페이지가 여러장 넘어가는 움직임에 약간의 시간차를 주기위해 리퀘스트애니메이션 대신에 인터벌함수 사용
 	setInterval(multiAnim, 100);
 };
 
@@ -228,38 +343,46 @@ window.onmousemove = function(e){
 		var margin = arrPage[pages-1].page.getBoundingClientRect();
 		x = Math.floor(e.clientX - margin.left);
 		y = Math.floor(e.clientY - margin.top);
+
+		if(flag!="prev" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
+			canNext=true;
+			next.style.opacity=0.75;
+		} else if(flag!="prev" && currentPage>0 && currentPage<pages-1 && x>1000 && x<1280 && y>0 && y<720){
+			canNext=true;
+			next.style.opacity=0.75;
+		} else {
+			canNext=false;
+			next.style.opacity=0;
+		}
+		if(flag!="next" && currentPage>0 && x>-1280 && x<0 && y>0 && y<720){
+			canPrev=true;
+			prev.style.opacity=0.75;
+		} else {
+			canPrev=false;
+			prev.style.opacity=0;
+		}
 	}
 }
 window.onmousedown = function(e){
-	if(flag!="prev" && x>0 && x<1280 && y>0 && y<720){
+	if(flag!="prev" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
+		if(currentPage<pages-1 && multiFlag=="none"){
+			arrPage[currentPage].flag = "next";
+			currentPage++;
+		}
+	}else if(flag!="prev" && currentPage>0 && x>1000 && x<1280 && y>0 && y<720){
 		if(currentPage<pages-1 && multiFlag=="none"){
 			arrPage[currentPage].flag = "next";
 			currentPage++;
 		}
 	}
-	if(flag!="next" && x>-1280 && x<0 && y>0 && y<720){
-	 	if(currentPage>0 && multiFlag=="none"){
+	if(x>-1280 && x<0 && y>0 && y<720){
+		if(flag=="none" && currentPage==1 && multiFlag=="none"){
+	 		arrPage[0].flag = "prev";
+	 		currentPage=0;
+	 	} else if(flag!="next" && currentPage>1 && multiFlag=="none"){
 	 		arrPage[currentPage-1].flag = "prev";
 	 		currentPage--;
 	 	}
-	}
-	if(flag=="none" && x>330 && x<630 && y>=-60 && y<0){
-		if(currentPage<2 && flag=="none"){
-			multiFlag="work1";
-		} else if(currentPage>2 && flag=="none"){
-			multiFlag="work2";
-		}
-	}
-	if(flag=="none" && x>40 && x<340 && y>=-60 && y<0){
-		if(currentPage==0){
-			multiFlag = "intro1";
-			if(arrPage[currentPage].className!="nextPage" && (flag=="none" || flag=="next")){
-				arrPage[0].flag = "next";
-				currentPage=1;
-			}
-		} else if(currentPage>1 && flag=="none"){
-			multiFlag="intro2";
-		}
 	}
 }
 window.onmousewheel = function(){
