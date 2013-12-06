@@ -1,10 +1,10 @@
-var idxIntro1, idxIntro2, idxWork1, idxWork2, light, prev, next;
+var book, idxIntro1, idxIntro2, idxWork1, idxWork2, light, prev, next;
 var x, y;
-var lightAlpha = 0.9;
+var lightAlpha = 1;
 var lightDropoff=0.5;
 var lightSize = 0;
 
-var flagLight = "init";
+var flagLight = "load";
 
 var pages = 5;
 var arrPage = new Array();
@@ -297,6 +297,7 @@ function pageSetting(_i){
 }
 
 window.onload = function(){
+	book = document.querySelector("#book");
 	for(var i=0; i<pages; i++){
 		pageSetting(i);
 	}
@@ -333,6 +334,11 @@ window.onload = function(){
 			multiFlag="work2";
 		}
 	}
+	
+	//시작
+	book.style.display="block";
+	light.style.backgroundColor="transparent";
+	flagLight="init";
 	animation();
 	//페이지가 여러장 넘어가는 움직임에 약간의 시간차를 주기위해 리퀘스트애니메이션 대신에 인터벌함수 사용
 	setInterval(multiAnim, 100);
@@ -344,7 +350,7 @@ window.onmousemove = function(e){
 		x = Math.floor(e.clientX - margin.left);
 		y = Math.floor(e.clientY - margin.top);
 
-		if(flag!="prev" && flagLight!="init" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
+		if(flag!="prev" && flagLight!="init" && flagLight!="load" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
 			canNext=true;
 			next.style.opacity=0.75;
 		} else if(flag!="prev" && currentPage>0 && currentPage<pages-1 && x>1000 && x<1280 && y>0 && y<720){
@@ -354,7 +360,7 @@ window.onmousemove = function(e){
 			canNext=false;
 			next.style.opacity=0;
 		}
-		if(flag!="next" && currentPage>0 && x>-1280 && x<100 && y>0 && y<720){
+		if(flag!="next" && flagLight!="init" && flagLight!="load" && currentPage>0 && x>-1280 && x<100 && y>0 && y<720){
 			canPrev=true;
 			prev.style.opacity=0.75;
 		} else {
