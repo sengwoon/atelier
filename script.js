@@ -22,7 +22,7 @@ var contentFlag = false;
 
 function animation(){
 	//조명 제어
-	light.style.backgroundImage = "-webkit-gradient(radial, 50% 500, 0, 50% 500, "+lightSize+", from(rgba(0,0,0,0)), to(rgba(0,0,0,"+lightAlpha+")), color-stop(0.7, rgba(0,0,0,"+lightDropoff+")))";
+	light.style.backgroundImage = "-webkit-gradient(radial, 50% 50%, 0, 50% 50%, "+lightSize+", from(rgba(0,0,0,0)), to(rgba(0,0,0,"+lightAlpha+")), color-stop(0.7, rgba(0,0,0,"+lightDropoff+")))";
 	if(flagLight=="init"){
 		lightAlpha-=0.001;
 		lightSize+=2.5;
@@ -354,7 +354,7 @@ window.onmousemove = function(e){
 			canNext=false;
 			next.style.opacity=0;
 		}
-		if(flag!="next" && currentPage>0 && x>-1280 && x<0 && y>0 && y<720){
+		if(flag!="next" && currentPage>0 && x>-1280 && x<100 && y>0 && y<720){
 			canPrev=true;
 			prev.style.opacity=0.75;
 		} else {
@@ -375,7 +375,7 @@ window.onmousedown = function(e){
 			currentPage++;
 		}
 	}
-	if(x>-1280 && x<0 && y>0 && y<720){
+	if(x>-1280 && x<100 && y>0 && y<720){
 		if(flag=="none" && currentPage==1 && multiFlag=="none"){
 	 		arrPage[0].flag = "prev";
 	 		currentPage=0;

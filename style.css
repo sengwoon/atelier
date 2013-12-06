@@ -16,9 +16,11 @@ p{
 #book{
 	-webkit-transform:  translate3d(0px, 0px, 0px);
 	-webkit-perspective: 5000px;
-	position: relative;
-	margin:auto;
-	top:60px;
+	position: absolute;
+	left:50%;
+	top:50%;
+	margin-left:-640px;
+	margin-top: -410px;
 	width:1280px;
 	height:780px;
 	
@@ -221,44 +223,51 @@ p{
 	width:100%;
 	height:100%;
     pointer-events: none;
-    background-image: -webkit-gradient(radial, 50% 500, 0, 50% 500, 700, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.8)), color-stop(0.8, rgba(0,0,0,0)));
+    background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 0, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.8)), color-stop(0.8, rgba(0,0,0,0)));
 }
 #prev{
 	transition:0.5s;
 	position: absolute;
-	top:450px;
-	left:10px;
-	color:grey;
+	background-color: #414141;
+	top:50%;
+	left:0%;
+	margin-left:15px;
+	color:white;
 	font-size: 18px;
-	width:45px;
-	height:60px;
+	width:37px;
+	height:52px;
+	padding:5px;
+	border-radius: 10%;
 	opacity: 0;
 }
 #prevTri{
-	-webkit-clip-path: polygon(0px 15px, 30px 0px, 30px 30px);
-	background-color: grey;
+	-webkit-clip-path: polygon(0px 15px, 28px 0px, 30px 5px, 10px 15px, 30px 25px, 28px 30px);
+	background-color: white;
 	margin: auto;
+	margin-bottom: 3px;
 	width:30px;
 	height:30px;
-	border: 3px solid grey;
 }
 #next{
 	transition:0.5s;
 	position: absolute;
-	margin-left:50%;
-	top:450px;
-	left:550px;
-	color:grey;
+	background-color: #414141;
+	top:50%;
+	left:50%;
+	margin-left:575px;
+	color:white;
 	font-size: 18px;
-	width:45px;
-	height:60px;
+	width:37px;
+	height:52px;
+	padding:5px;
+	border-radius: 10%;
 	opacity: 0;
 }
 #nextTri{
-	-webkit-clip-path: polygon(0px 0px, 0px 30px, 30px 15px);
-	background-color: grey;
+	-webkit-clip-path: polygon(2px 0px, 30px 15px, 2px 30px, 0px 25px, 20px 15px, 0px 5px);
+	background-color: white;
 	margin: auto;
+	margin-bottom: 3px;
 	width:30px;
 	height:30px;
-	border: 3px solid grey;
 }
