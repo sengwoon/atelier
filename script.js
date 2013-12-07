@@ -24,7 +24,7 @@ function animation(){
 	//조명 제어
 	light.style.backgroundImage = "-webkit-gradient(radial, 50% 50%, 0, 50% 50%, "+lightSize+", from(rgba(0,0,0,0)), to(rgba(0,0,0,"+lightAlpha+")), color-stop(0.7, rgba(0,0,0,"+lightDropoff+")))";
 	if(flagLight=="init"){
-		lightAlpha-=0.001;
+		lightAlpha-=0.002;
 		lightSize+=2.5;
 		if(lightAlpha<0.85)
 			lightAlpha=0.85;
@@ -189,8 +189,10 @@ function animation(){
 	if(currentPage<1){
 		if(flag=="none"){
 			if(flagLight=="init"){
-				idxIntro1.className="indexInit1";
-				idxWork1.className="indexInit2";
+				if(lightAlpha<=0.9){
+					idxIntro1.className="indexInit1";
+					idxWork1.className="indexInit2";
+				}
 			} else {
 				idxIntro1.className="indexAni";
 				idxWork1.className="indexAni";
