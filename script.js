@@ -1,4 +1,5 @@
-var book, idxIntro1, idxIntro2, idxWork1, idxWork2, light, prev, next;
+var book, light;
+var idxIntro1, idxIntro2, idxWork1, idxWork2, prev, next, btnGame, btnMotion, btnPainting, btnDrawing;
 var x, y;
 var lightAlpha = 1;
 var lightDropoff=0.5;
@@ -6,7 +7,7 @@ var lightSize = 0;
 
 var flagLight = "load";
 
-var pages = 5;
+var pages = 8;
 var arrPage = new Array();
 var arrContent = new Array();
 
@@ -33,7 +34,7 @@ function animation(){
 		if(lightAlpha==0.85 && lightSize==350)
 			flagLight="none";
 	}
-	if(flagLight=="in" && lightAlpha==0.85){
+	if(flagLight=="in"){
 		lightSize+=7;
 		lightDropoff-=0.01;
 		if(lightDropoff<0)
@@ -42,7 +43,7 @@ function animation(){
 			lightSize=750;
 		if(lightDropoff==0 && lightSize==750)
 			flagLight = "none";			
-	} else if(flagLight=="out" && lightAlpha==0.85){
+	} else if(flagLight=="out"){
 		lightSize-=7;
 		lightDropoff+=0.01;
 		if(lightDropoff>0.5)
@@ -69,7 +70,7 @@ function animation(){
 		}
 	}
 	//페이지 넘김가능표시 제어
-	if(flag=="none"){
+	if(flag=="none" && contentFlag==false){
 		if(canNext){
 			arrPage[currentPage].deg-=0.4;
 			if(arrPage[currentPage].deg<-5)
@@ -175,12 +176,12 @@ function animation(){
 		arrPage[i].page.style["-webkit-transform"] = "rotateY("+arrPage[i].deg+"deg)";
 		arrPage[i].page.style["-webkit-filter"] = "brightness("+arrPage[i].bright+")";
 	}
-
-	if(contentFlag){
+	//콘텐츠 알파값 제어 / 현재 페이지의 각도가 -5도 이내로 들어오면 시작(이전/다음페이지 UI를 위해 -5도의 여분)
+	if(contentFlag && arrPage[currentPage].deg >=-5){
 		arrContent[currentPage].alpha+=0.04;
 		if(arrContent[currentPage].alpha>=1){
-			if(currentPage>0)
-				arrContent[currentPage].ctnt.style["-webkit-transform"] = "translate3d(0px, 0px, 2px)";
+			// if(currentPage>0) // 플래그하나 추가해서 콘텐츠 확대? 활성화? 버튼을 가능하게 만들것
+			// 	arrContent[currentPage].ctnt.style["-webkit-transform"] = "translate3d(0px, 0px, 2px)";
 			arrContent[currentPage].alpha=1;
 			contentFlag = false;
 		}
@@ -189,13 +190,13 @@ function animation(){
 	if(currentPage<1){
 		if(flag=="none"){
 			if(flagLight=="init"){
-				if(lightAlpha<=0.9){
-					idxIntro1.className="indexInit1";
-					idxWork1.className="indexInit2";
-				}
+				if(lightAlpha<=0.86)
+					idxIntro1.className="indexInit";
+				if(lightAlpha<=0.85)
+					idxWork1.className="indexInit";
 			} else {
-				idxIntro1.className="indexAni";
-				idxWork1.className="indexAni";
+				idxIntro1.className="indexHover";
+				idxWork1.className="indexHover";
 			}
 		} else {
 			idxIntro1.className="index";
@@ -211,7 +212,7 @@ function animation(){
 	} else if(currentPage==1){
 		idxIntro1.className="index";
 		if(flag=="none"){
-			idxWork1.className="indexAni";
+			idxWork1.className="indexHover";
 		} else{
 			idxWork1.className="index";
 		}
@@ -223,7 +224,7 @@ function animation(){
 		idxIntro1.className="index";
 		idxWork1.className="index";
 		if(flag=="none"){
-			idxIntro2.className="indexAni";
+			idxIntro2.className="indexHover";
 		} else{
 			idxIntro2.className="index";
 		}
@@ -232,8 +233,8 @@ function animation(){
 		idxIntro1.className="index";
 		idxWork1.className="index";
 		if(flag=="none"){
-			idxIntro2.className="indexAni";
-			idxWork2.className="indexAni";
+			idxIntro2.className="indexHover";
+			idxWork2.className="indexHover";
 		} else{
 			idxIntro2.className="index";
 			idxWork2.className="index";
@@ -280,6 +281,55 @@ function multiAnim(){
 			multiFlag="none";
 		}
 	}
+	//이 이후로는 작업이 추가되면서 페이지가 늘어날때마다 조정할 것
+	if(multiFlag=="game"){
+		if(num == undefined)
+			num = currentPage;
+		arrPage[num].flag = "next";
+		currentPage++;
+		num++;
+		if(num==3){
+			currentPage=3;
+			num=undefined;
+			multiFlag="none";
+		}
+	}
+	if(multiFlag=="motion"){
+		if(num == undefined)
+			num = currentPage;
+		arrPage[num].flag = "next";
+		currentPage++;
+		num++;
+		if(num==4){
+			currentPage=4;
+			num=undefined;
+			multiFlag="none";
+		}
+	}
+	if(multiFlag=="painting"){
+		if(num == undefined)
+			num = currentPage;
+		arrPage[num].flag = "next";
+		currentPage++;
+		num++;
+		if(num==5){
+			currentPage=5;
+			num=undefined;
+			multiFlag="none";
+		}
+	}
+	if(multiFlag=="drawing"){
+		if(num == undefined)
+			num = currentPage;
+		arrPage[num].flag = "next";
+		currentPage++;
+		num++;
+		if(num==6){
+			currentPage=6;
+			num=undefined;
+			multiFlag="none";
+		}
+	}
 }
 function pageSetting(_i){
 	var objP={};
@@ -304,14 +354,25 @@ window.onload = function(){
 		pageSetting(i);
 	}
 	arrContent[0].alpha=1;
+	light = document.querySelector("#black");
 
 	idxIntro1 = document.querySelector("#intro1");
 	idxIntro2 = document.querySelector("#intro2");
 	idxWork1 = document.querySelector("#work1");
 	idxWork2 = document.querySelector("#work2");
-	light = document.querySelector("#black");
+	idxIntro1.style.left=48+"px";
+	idxWork1.style.left=220+"px";
+	idxIntro2.style.left=48+"px";
+	idxIntro2.style.backgroundColor="#bcbcbc";
+	idxWork2.style.left=220+"px";
+	idxWork2.style.backgroundColor="#a6a6a6";
+	
 	prev = document.querySelector("#prev");
 	next = document.querySelector("#next");
+	btnGame = document.querySelector("#game");
+	btnMotion = document.querySelector("#motion");
+	btnPainting = document.querySelector("#painting");
+	btnDrawing = document.querySelector("#drawing");
 	//인덱스 버튼의 경우 겹치는 부분을 처리하기 위해 온클릭 함수를 사용(div의 상하관계를 인식)
 	idxIntro1.onclick = function(){
 		if(currentPage==0 && flag=="none"){
@@ -336,6 +397,27 @@ window.onload = function(){
 			multiFlag="work2";
 		}
 	}
+
+	btnGame.onclick = function(){
+		if(currentPage==2 && flag=="none"){
+			multiFlag="game";
+		}
+	}
+	btnMotion.onclick = function(){
+		if(currentPage==2 && flag=="none"){
+			multiFlag="motion";
+		}
+	}
+	btnPainting.onclick = function(){
+		if(currentPage==2 && flag=="none"){
+			multiFlag="painting";
+		}
+	}
+	btnDrawing.onclick = function(){
+		if(currentPage==2 && flag=="none"){
+			multiFlag="drawing";
+		}
+	}
 	
 	//시작
 	light.removeChild(light.childNodes[0]);
@@ -353,17 +435,18 @@ window.onmousemove = function(e){
 		x = Math.floor(e.clientX - margin.left);
 		y = Math.floor(e.clientY - margin.top);
 
-		if(flag!="prev" && flagLight!="init" && flagLight!="load" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
+		//이전페이지, 다음페이지 UI 뜨는 조건
+		if(flag!="prev" && flagLight!="load" && flagLight!="init" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
 			canNext=true;
 			next.style.opacity=0.75;
-		} else if(flag!="prev" && currentPage>0 && currentPage<pages-1 && x>1000 && x<1280 && y>0 && y<720){
+		} else if(flag!="prev" && currentPage>0 && currentPage<pages-1 && arrPage[0].flag!="next" && x>1000 && x<1280 && y>0 && y<720){
 			canNext=true;
 			next.style.opacity=0.75;
 		} else {
 			canNext=false;
 			next.style.opacity=0;
 		}
-		if(flag!="next" && flagLight!="init" && flagLight!="load" && currentPage>0 && x>-1280 && x<100 && y>0 && y<720){
+		if(flag!="next" && flagLight!="load" && flagLight!="init" && currentPage>0 && x>-1280 && x<100 && y>0 && y<720){
 			canPrev=true;
 			prev.style.opacity=0.75;
 		} else {
@@ -374,12 +457,12 @@ window.onmousemove = function(e){
 }
 window.onmousedown = function(e){
 	if(flag!="prev" && currentPage==0 && x>0 && x<1280 && y>0 && y<720){
-		if(currentPage<pages-1 && multiFlag=="none"){
-			arrPage[currentPage].flag = "next";
-			currentPage++;
-		}
+		if(flag=="none" && currentPage==0 && multiFlag=="none"){
+			arrPage[0].flag = "next";
+	 		currentPage=1;
+	 	}
 	}else if(flag!="prev" && currentPage>0 && x>1000 && x<1280 && y>0 && y<720){
-		if(currentPage<pages-1 && multiFlag=="none"){
+		if(arrPage[0].flag!="next" && currentPage<pages-1 && multiFlag=="none"){
 			arrPage[currentPage].flag = "next";
 			currentPage++;
 		}
