@@ -1,0 +1,15 @@
+@font-face {
+	font-family: "AgendaBold";
+	src: url("./font/AgendaBold.eot");
+	src: url("./font/AgendaBold.woff") format("woff"),
+		 url("./font/AgendaBold.eot?#iefix") format("embedded-opentype"),
+		 url("./font/AgendaBold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "ShowcardGothic";
+	src: url("./font/ShowcardGothic.eot");
+	src: url("./font/ShowcardGothic.woff") format("woff"),
+		 url("./font/ShowcardGothic.eot?#iefix") format("embedded-opentype"),
+		 url("./font/ShowcardGothic.ttf") format("truetype");
+}
