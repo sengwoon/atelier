@@ -23,7 +23,7 @@ var flag = "none";
 var canNext = false;
 var canPrev = false;
 var multiFlag = "none";
-var targetNum=0;
+var targetNum;
 //여러장 넘김 제어용 변수
 var num;
 //페이지 UI 제어용 마우스 위치 변수
@@ -318,7 +318,7 @@ function multiAnim(){
 		num++;
 		if(num==targetNum){
 			currentPage=targetNum;
-			targetNum=0;
+			targetNum=undefined;
 			num=undefined;
 			multiFlag="none";
 		}
@@ -441,11 +441,10 @@ function building(){
 			pagediv.childNodes[2].childNodes[i].childNodes[0].style.backgroundRepeat="repeat-x";
 			//카테고리 버튼
 			pagediv.childNodes[2].childNodes[i].childNodes[0].onclick = function(e){
-				if(currentPage==2 && flag=="none"){
+				targetNum=e.target.name+3;
+				if(e.target.name!=undefined && currentPage==2 && flag=="none"){
 					multiFlag="category";
 				}
-				targetNum=e.target.name+3;
-				console.log(targetNum);
 			};
 			//카테고리명 삽입
 			pagediv.childNodes[2].childNodes[i].appendChild(document.createElement('div'));
@@ -503,7 +502,7 @@ function building(){
 			pagediv.childNodes[0].childNodes[1].innerHTML="<h2>"+database[i].title+"</h2><h3>"+database[i].content+"</h3><h3 style=\"color:grey\">"+database[i].subcontent+"</h3>"
 			pagediv.childNodes[0].appendChild(document.createElement('div')); pagediv.childNodes[0].childNodes[2].className="footer";
 				pagediv.childNodes[0].childNodes[2].appendChild(document.createElement('div')); pagediv.childNodes[0].childNodes[2].childNodes[0].className="footerLeft"; pagediv.childNodes[0].childNodes[2].childNodes[0].textContent="Copyright 2013. RM (Seungwoon Park) all rights reserved.";
-				pagediv.childNodes[0].childNodes[2].appendChild(document.createElement('div')); pagediv.childNodes[0].childNodes[2].childNodes[1].className="footerRight"; pagediv.childNodes[0].childNodes[2].childNodes[1].textContent=database[i].title+"_"+(i+3);
+				pagediv.childNodes[0].childNodes[2].appendChild(document.createElement('div')); pagediv.childNodes[0].childNodes[2].childNodes[1].className="footerRight"; pagediv.childNodes[0].childNodes[2].childNodes[1].textContent="Work_"+database[i].category+"_"+database[i].title+"_"+(i+3);
 		pages++;
 		book.appendChild(pagediv);
 	}
