@@ -1,25 +1,37 @@
+<!--
+Marionette Atelier, ver.1.00.0, 2013.12.27
+Copyright 2013. RM (Seungwoon Park)
+Designed and built by RM.
+red.marionette0424@gmail.com
+-->
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
 		<meta charset="UTF-8">
 		<title>Marionette Atelier</title>
-		<link type="text/css" rel="stylesheet" href="style.css" />
-		<script type="text/javascript" src="script.js"></script>
+		<!-- jQuery -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<!-- write page -->
+		<script type="text/javascript" src="./js/page.js"></script>
+		<!-- database -->
+		<script type="text/javascript" src="./js/data.js"></script>
+		<link type="text/css" rel="stylesheet" href="./css/style.css"/>
 	</head>
 	<body oncontextmenu="return false" onselectstart="return false">
+		<!-- 책 부분 -->
 		<div id="book">
 <!-- 0페이지 -->
-			<div class="page"><img src="img/cover.png"/>
+			<div class="page"><img src="css/cover.png"/>
 				<div class="content"></div>
 			</div>
 <!-- 1페이지 -->
 			<div class="page">
 				<div id="intro1">About</div>
-				<img style="background-color:#f3f3f3; position:absolute" src="img/bg_page.png" />
+				<img style="background-color:#f3f3f3; position:absolute" src="css/bg_page.png" />
 				<div class="content">
 					<div class="block">
 						<h2>RM Profile</h2>
-							<img style="float:left; margin-right:18px" src="img/profile.png" />
+							<img style="float:left; margin-right:18px" src="css/profile.png" />
 							<h3>박승운 (Red Marionette)</h3>
 							<h3>그래픽 아티스트</h3>
 							<h3>국민대학교</h3>
@@ -29,165 +41,33 @@
 							<h3 style="color:grey">Kookmin University</h3>
 							<h3 style="width:340px; color:grey">Visual Communication Design</h3>
 					</div>
-					<div class="block">
-						
-					</div>
+					<div class="block"></div>
 					<div class="block">
 						<h2>Contact</h2>
 							<h3>010-6346-4374</h3>
 							<h3>red.marionette0424@gmail.com</h3>
 					</div>
-					<div class="block"></div>
-					<div class="block"></div>
-					<div class="block"></div>
-					<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
-					<div class="footerRight">About_1</div>
-				</div>
-			</div>
-<!-- 2페이지 -->
-			<div class="page">
-				<div id="work1">Work</div>
-				<img style="background-color:#f3f3f3; position:absolute" src="img/bg_page.png" />
-				<div class="content">
-					<div class="block">
-						<img src="img/game.jpg" id="category0" class="category"/>
-						<div class="subBlock">
-							<h2>Game (1)</h2>
-						</div>
-						<div>
-							<h3>원더랜드 (Wonderland)</h3>
-						</div>
-					</div>
-					<div class="block">
-						<img src="img/motion.jpg" id="category1" class="category"/>
-						<div class="subBlock">
-							<h2>Motion Graphic (1)</h2>
-						</div>
-						<div>
-							<h3>Brainwashing</h3>
-						</div>
-					</div>
-					<div class="block"> </div>
-					<div class="block">
-						<img src="img/painting.jpg" id="category2" class="category"/>
-						<div class="subBlock">
-							<h2>Painting (1)</h2>
-						</div>
-						<div>
-							<h3>concept art</h3>
-						</div>
-					</div>
-					<div class="block">
-						<img src="img/drawing.jpg" id="category3" class="category"/>
-						<div class="subBlock">
-							<h2>Drawing (1)</h2>
-						</div>
-						<div>
-							<h3>scribblings</h3>
-						</div>
-					</div>
-					<div class="block"> </div>
-					<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
-					<div class="footerRight">Work_2</div>
-				</div>
-			</div>
-<!-- 3페이지 -->
-			<div class="page">
-				<div class="content">
-					<div class="workBlock">
-						<img src="img/game_01.jpg" id="game01" class="button"/>
-					</div>
-					<div class="block">
-						<h2>원더랜드 (Wonderland)</h2>
-							<h3>멀티디바이스 게임</h3>
-							<h3 style="color:grey">multi-device game</h3>
-							<h3 style="color:grey">2013, HTML5+Javascript</h3>
-					</div>
-					<div class="block"> </div>
-					<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
-					<div class="footerRight">Work_Game_원더랜드 (Wonderland)_3</div>
-				</div>
-			</div>
-<!-- 4페이지 -->
-			<div class="page">
-				<div class="content">
-					<div class="workBlock">
-						<img src="img/motion_01.jpg" id="motion01" class="button"/>
-					</div>
-					<div class="block">
-						<h2>Brainwahing</h2>
-							<h3>사이키델릭 타이포그래피</h3>
-							<h3 style="color:grey">psychedelic typography</h3>
-							<h3 style="color:grey">2012, Photoshop+After Effects</h3>
-					</div>
-					<div class="block"> </div>
-					<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
-					<div class="footerRight">Work_Motion_Brainwashing_4</div>
-				</div>
-			</div>
-<!-- 5페이지 -->
-			<div class="page">
-				<div class="content">
-					<div class="workBlock">
-						<img src="img/painting_01.jpg" id="painting01" class="button"/>
-					</div>
-					<div class="block">
-						<h2>concept art</h2>
-							<h3>컨셉아트</h3>
-							<h3 style="color:grey">2012, Photoshop</h3>
-					</div>
-					<div class="block"> </div>
-					<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
-					<div class="footerRight">Work_Painting_concept art_5</div>
-				</div>
-			</div>
-<!-- 6페이지 -->
-			<div class="page">
-				<div class="content">
-					<div class="workBlock">
-						<img src="img/drawing_01.jpg" id="drawing01" class="button"/>
-					</div>
-					<div class="block">
-						<h2>scribbling</h2>
-							<h3 style="color:grey">2011, pencil drawing</h3>
-					</div>
-					<div class="block"> </div>
-					<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
-					<div class="footerRight">Work_Drawing_scribblings_6</div>
-				</div>
-			</div>
-<!-- 7페이지 -->
-			<div class="page">
-				<div id="work2" class="index">Work</div>
-				<div id="intro2" class="index">About</div>
-				<img style="background-color:lightgrey; position:absolute" src="img/bg_page.png" />
-				<div class="content">
-					<div class="block">
-						<h2>Outro: Marionette Atelier</h2>
-							<h3>RM's web-portfolio</h3>
-							<h3>Design: RM</h3>
-							<h3 style="color:#2c2119">010-6346-4374</h3>
-							<h3 style="color:#2c2119">red.marionette0424@gmail.com</h3>
-							<br>
-							<h3>Font: Malgun Gothic</h3>
-							<h3>Built by RM, in HTML5.</h3>
-							<br>
-							<h3>Copyright 2013. RM (Seungwoon Park) all rights reserved.</h3>
+					<div class="footer">
+						<div class="footerLeft">Copyright 2013. RM (Seungwoon Park) all rights reserved.</div>
+						<div class="footerRight">About_1</div>
 					</div>
 				</div>
+				
 			</div>
+-->
 		</div>
-	<div id="black">loading...
-		<div id="zoomBox"></div>
-		<img src="img/close.svg" id="close"/>
-	</div>
-	<div id="prev">
-		<div id="prevTri"></div>
-		<p>Prev</p>
-	</div>
-	<div id="next">
-		<div id="nextTri"></div>
-		<p>Next</p>
-	</div>
+		<!-- 라이팅 및 UI 부분 -->
+		<div id="black">데이터 로딩중...
+			<div id="zoomBox"></div>
+			<img src="css/close.svg" id="close"/>
+		</div>
+		<div id="prev">
+			<div id="prevTri"></div>
+			<p>Prev</p>
+		</div>
+		<div id="next">
+			<div id="nextTri"></div>
+			<p>Next</p>
+		</div>
 	</body>
 </html>
