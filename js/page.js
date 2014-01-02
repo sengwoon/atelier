@@ -35,6 +35,7 @@ function animation(){
 	//모드 제어(조명, 페이지 넘김가능 표시, )
 	if(mode=="book"){
 		light.style.backgroundImage = "-webkit-gradient(radial, 50% 50%, 0, 50% 50%, "+lightSize+", from(rgba(0,0,0,0)), to(rgba(0,0,0,"+lightAlpha+")), color-stop(0.7, rgba(0,0,0,"+lightDropoff+")))";
+		light.style.backgroundImage	= "-ms-radial-gradient(center center, "+lightSize+"px "+lightSize+"px, rgba(0,0,0,0) 0%, rgba(0,0,0,"+lightDropoff+") 70%, rgba(0,0,0,"+lightAlpha+") 100%)";
 		if(flagLight=="init"){
 			lightAlpha-=0.002;
 			lightSize+=2.5;
@@ -76,93 +77,73 @@ function animation(){
 				//여러번 클릭해 넘길때 페이지넘김플래그와 콘텐츠플래그가 가장 마지막 페이지 넘김이 완료될때까지 유지
 				flag = "next";
 				contentFlag = false;
-				//콘텐츠 오퍼시티를 낮춤 // 페이지 넘김 트렌지션 시작
-				arrContent[i].alpha-=0.05;
-				arrPage[i].trans+=0.05;
-				//콘텐츠 오퍼시티가 0이되면 0으로 고정
-				if(arrContent[i].alpha<=0)
-					arrContent[i].alpha=0;
-				//콘텐츠 오퍼시티가 0이되는 시간과 동일한 시간을 상정한 트렌지션
-				if(arrPage[i].trans>=1){
-					arrPage[i].trans=1;
-					//페이지 넘김
-					if(arrPage[i].deg>-82.7){
-						arrPage[i].accel +=0.05 ;
-						//표지의 경우, 조명 인
-						if(i==0 && arrPage[i].deg<-40) flagLight="in";
-					} else {
-						arrPage[i].accel -=0.02 ;
-						if(arrPage[i].accel <= 0.1){
-							arrPage[i].accel = 0.1;
-						}
-						arrPage[i].page.style.zIndex = i+1;
-						//페이지 앞뒷면 전환효과
-						if(i == 0)
-							arrPage[i].page.childNodes[0].style.display="none";
-						if(i == 1)
-							idxIntro1.style.display="none";
-						if(i == 2)
-							idxWork1.style.display="none";
+				//페이지 넘김
+				if(arrPage[i].deg>-82.7){
+					arrPage[i].accel +=0.05 ;
+					//표지의 경우, 조명 인
+					if(i==0 && arrPage[i].deg<-40) flagLight="in";
+				} else {
+					arrPage[i].accel -=0.02 ;
+					if(arrPage[i].accel <= 0.1){
+						arrPage[i].accel = 0.1;
 					}
-					arrPage[i].deg -= arrPage[i].accel;
-					//페이지가 완전히 넘어가면 가속도 초기화, 페이지 넘김 종료, 콘텐츠 플래그 실행
-					if(arrPage[i].deg<=-180){
-						arrPage[i].accel= 0;
-						arrPage[i].deg  = -180;
-						flag = "none";
-						contentFlag = true;
-						arrPage[i].trans = 0;
-						arrPage[i].flag = "none";
-					}
+					//페이지 앞뒷면 전환효과
+					arrPage[i].page.style.zIndex = i+1;
+					arrContent[i].style.opacity=0;
+					if(i == 0)
+						arrPage[i].page.childNodes[0].style.display="none";
+					if(i == 1)
+						idxIntro1.style.display="none";
+					if(i == 2)
+						idxWork1.style.display="none";
+				}
+				arrPage[i].deg -= arrPage[i].accel;
+				//페이지가 완전히 넘어가면 가속도 초기화, 페이지 넘김 종료, 콘텐츠 플래그 실행
+				if(arrPage[i].deg<=-180){
+					arrPage[i].accel= 0;
+					arrPage[i].deg  = -180;
+					flag = "none";
+					// contentFlag = true;
+					arrPage[i].flag = "none";
 				}
 			}
 			if( flag != "next" && arrPage[i].flag=="prev"){
 				//여러번 클릭해 넘길때 페이지넘김플래그와 콘텐츠플래그가 가장 마지막 페이지 넘김이 완료될때까지 유지
 				flag = "prev";
 				contentFlag = false;
-				//콘텐츠 오퍼시티를 낮춤 // 페이지 넘김 트렌지션 시작
-				arrContent[i+1].alpha-=0.05;
-				arrPage[i].trans+=0.05;
-				//콘텐츠 오퍼시티가 0이되면 0으로 고정
-				if(arrContent[i+1].alpha<=0)
-					arrContent[i+1].alpha=0;
-				//콘텐츠 오퍼시티가 0이되는 시간과 동일한 시간을 상정한 트렌지션
-				if(arrPage[i].trans>=1){
-					arrPage[i].trans=1;
-					//페이지 넘김
-					if(arrPage[i].deg<-82.7){
-						arrPage[i].accel +=0.05;
-						//표지의 경우, 조명 아웃
-						if(i==0 && arrPage[i].deg>-110) flagLight="out";
-					} else {
-						arrPage[i].accel -=0.02 ;
-						if(arrPage[i].accel <= 0.1){
-							arrPage[i].accel = 0.1;
-						}
-						arrPage[i].page.style.zIndex = pages-(i+1);
-						//페이지 앞뒷면 전환효과
-						if(i == 0)
-							arrPage[i].page.childNodes[0].style.display="block";
-						if(i == 1)
-							idxIntro1.style.display="block";
-						if(i == 2)
-							idxWork1.style.display="block";
-					}			
-					arrPage[i].deg += arrPage[i].accel ;
-					//페이지가 완전히 넘어가면 가속도 초기화, 페이지 넘김 종료, 콘텐츠 플래그 실행
-					if(arrPage[i].deg>=0){
-						arrPage[i].accel= 0;
-						arrPage[i].deg  = 0;
-						flag = "none";
-						contentFlag = true;
-						arrPage[i].trans = 0;
-						arrPage[i].flag = "none";
+				//페이지 넘김
+				if(arrPage[i].deg<-82.7){
+					arrPage[i].accel +=0.05;
+					//표지의 경우, 조명 아웃
+					if(i==0 && arrPage[i].deg>-110) flagLight="out";
+				} else {
+					arrPage[i].accel -=0.02 ;
+					if(arrPage[i].accel <= 0.1){
+						arrPage[i].accel = 0.1;
 					}
+					//페이지 앞뒷면 전환효과
+					arrPage[i].page.style.zIndex = pages-(i+1);
+					arrContent[i].style.opacity=1;
+					if(i == 0)
+						arrPage[i].page.childNodes[0].style.display="block";
+					if(i == 1)
+						idxIntro1.style.display="block";
+					if(i == 2)
+						idxWork1.style.display="block";
+				}			
+				arrPage[i].deg += arrPage[i].accel ;
+				//페이지가 완전히 넘어가면 가속도 초기화, 페이지 넘김 종료, 콘텐츠 플래그 실행
+				if(arrPage[i].deg>=0){
+					arrPage[i].accel= 0;
+					arrPage[i].deg  = 0;
+					flag = "none";
+					// contentFlag = true;
+					arrPage[i].flag = "none";
 				}
 			}
 			//페이지 각도와 디그리변수, 페이지 밝기와 브라이트 변수 동기화
-			arrContent[i].ctnt.style.opacity=arrContent[i].alpha;
 			arrPage[i].page.style["-webkit-transform"] = "rotateY("+arrPage[i].deg+"deg)";
+			arrPage[i].page.style["transform"] = "rotateY("+arrPage[i].deg+"deg)";
 			arrPage[i].page.style["-webkit-filter"] = "brightness("+arrPage[i].bright+")";
 		}
 		//페이지 넘김가능표시 제어
@@ -178,15 +159,15 @@ function animation(){
 			}
 		}
 		//콘텐츠 알파값 제어 / 현재 페이지의 각도가 -5도 이내로 들어오면 시작(이전/다음페이지 UI를 위해 -5도의 여분)
-		if(contentFlag && arrPage[currentPage].deg >=-5){
-			arrContent[currentPage].alpha+=0.04;
-			if(arrContent[currentPage].alpha>=1){
-				// if(currentPage>0) // 플래그하나 추가해서 콘텐츠 확대? 활성화? 버튼을 가능하게 만들것
-				// 	arrContent[currentPage].ctnt.style["-webkit-transform"] = "translate3d(0px, 0px, 2px)";
-				arrContent[currentPage].alpha=1;
-				contentFlag = false;
-			}
-		}
+		// if(contentFlag && arrPage[currentPage].deg >=-5){
+		// 	arrContent[currentPage].alpha+=0.04;
+		// 	if(arrContent[currentPage].alpha>=1){
+		// 		// if(currentPage>0) // 플래그하나 추가해서 콘텐츠 확대? 활성화? 버튼을 가능하게 만들것
+		// 		// 	arrContent[currentPage].ctnt.style["-webkit-transform"] = "translate3d(0px, 0px, 2px)";
+		// 		arrContent[currentPage].alpha=1;
+		// 		contentFlag = false;
+		// 	}
+		// }
 
 		//인덱스 움직임 제어
 		if(currentPage<1){
@@ -245,6 +226,7 @@ function animation(){
 	} else if(mode=="zoom"){
 		//줌 모드 라이트 조절
 		light.style.backgroundImage = "-webkit-gradient(radial, 50% 50%, 0, 50% 50%, "+lightSize+", from(rgba(0,0,0,0)), to(rgba(0,0,0,"+lightAlpha+")), color-stop(0.7, rgba(0,0,0,"+lightDropoff+")))";
+		light.style.backgroundImage	= "-ms-radial-gradient(center center, "+lightSize+"px "+lightSize+"px, rgba(0,0,0,0) 0%, rgba(0,0,0,"+lightDropoff+") 70%, rgba(0,0,0,"+lightAlpha+") 100%)";
 		if(flagLight=="none"){
 			lightSize-=40;
 			if(lightSize<=0)
@@ -331,7 +313,6 @@ function pageSetting(_i){
 	objP.flag = "none";
 	objP.deg = 0;
 	objP.accel = 0;
-	objP.trans = 0;
 	objP.bright = 1;
 	arrPage.push(objP);
 	arrPage[_i].page.style.zIndex = pages-(_i+1);
@@ -340,20 +321,16 @@ function pageSetting(_i){
 	} else if(_i==pages-1){
 		arrPage[_i].page.style.backgroundColor="lightgrey";
 		arrPage[_i].page.style["-webkit-box-shadow"]="0px 0 100px 30px rgba(0, 0, 0, 0.6)";
+		arrPage[_i].page.style["box-shadow"]="0px 0 100px 30px rgba(0, 0, 0, 0.6)";
 	}
-	var arrC = document.getElementsByClassName("content");
-	var objC={};
-	objC.ctnt = arrC[_i];
-	objC.alpha = 0;
-	arrContent.push(objC);
 }
 function init(){
 	//시작
 	mode="book";
-	light.removeChild(light.childNodes[0]);
 	book.style.display="block";
-	light.style.backgroundColor="transparent";
 	flagLight="init";
+	light.removeChild(light.childNodes[0]);
+	// light.style.backgroundColor="transparent";
 	animation();
 	//페이지가 여러장 넘어가는 움직임에 약간의 시간차를 주기위해 리퀘스트애니메이션 대신에 인터벌함수 사용
 	setInterval(multiAnim, 100);
@@ -362,16 +339,16 @@ function init(){
 function categorySetting(){
 	var categorySheet=[];
 	var point;
-	var cateNum=0;
+	categories=0;
 	//카테고리 갯수 확인
 	for(var i=0; i<sheetdata.length; i++){
 		if(sheetdata[i].content.$t=="누적통계")
 			point=sheetdata[i].title.$t.substr(0,1);
 		if(sheetdata[i].title.$t.substr(0,1)==point && sheetdata[i].title.$t.substr(1, 5)!=1){
-			cateNum++;
+			categories++;
 		}
 	}
-	categories=cateNum;
+	
 	//카테고리별 항목수 확인 및 카테고리 배열 생성
 	for(var i=2; i<categories+2; i++){
 		var data={};
@@ -402,13 +379,13 @@ function categorySetting(){
 //html 페이지 세팅
 function building(){
 	book = document.querySelector("#book");
-	light = document.querySelector("#black");
 	zoomBox = document.querySelector("#zoomBox");
 	prev = document.querySelector("#prev");
 	next = document.querySelector("#next");
 	btnClose = document.querySelector("#close");
+	light.childNodes[0].textContent="사이트 구성중...";
 	//작업확대창 종료 버튼
-	btnClose.onclick = function(){
+	light.onclick = function(){
 		if(mode=="zoom"){
 			zoomBox.style.opacity=0;
 			zoomBox.style.width="0px";
@@ -528,9 +505,11 @@ function building(){
 
 	pages++;
 	book.appendChild(pagediv);
+	//페이지/컨텐츠 제어 변수
 	for(var i=0; i<pages; i++){
 		pageSetting(i);
 	}
+	arrContent = document.getElementsByClassName("content");
 	//페이지 설정 종료 // 인덱스 설정
 	idxIntro1 = document.querySelector("#intro1");
 	idxIntro2 = document.querySelector("#intro2");

@@ -68,5 +68,9 @@ function dataBaseSetting(){
 	building();
 };
 window.onload = function(){
+	light = document.querySelector("#black");
+	light.removeChild(light.childNodes[0]);
+	console.log(light.childNodes[0]);
+	light.childNodes[0].textContent="사이트 구성중...";
 	dataBaseSetting();
 };
